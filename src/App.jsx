@@ -27,26 +27,35 @@ const Layout = () => {
   );
 };
 
-/*
-  HomePage (show all products)
-  product detail page
-  checkout page
-  3 pages này dùng chung 2 components header và footer
+const LayoutAdmin = () => {
+
+  const isAdminRoute = window.location.pathname.startsWith('/admin');
+  const user = useSelector(state => state.account.user)
+  const userRole = user.role;
+
+  return (
+    <div className="layout-app">
+      {isAdminRoute && userRole === 'ADMIN' && <Header/>}
+      <Outlet />
+      {isAdminRoute && userRole === 'ADMIN' && <Footer/>}
+    </div>
+  );
+};
 
 
-  login/register page
-  admin page...
-*/
 export default function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
   const getAccount = async () => {
-    if(window.location.pathname === '/login'  || window.location.pathname === '/login') return
+    if(window.location.pathname === '/login'
+    || window.location.pathname === '/register'
+    || window.location.pathname === '/'
+    ) return
     const res = await callFetchAccount();
     // console.log(">>>check res:", res);
     if (res && res.data) {
-      dispatch(doGetAccountAction(res.data.user));
+      dispatch(doGetAccountAction(res.data));
     }
   };
 
@@ -73,9 +82,9 @@ export default function App() {
     },
     {
       path: "/admin",
-      element: <Layout />,
+      element: <LayoutAdmin />,
       errorElement: <NotFound/>,
-      children: [
+      children: [ 
         { index: true, element: <ProtectedRoute><AdminPage /></ProtectedRoute>},
         {
           path: "user",
@@ -87,7 +96,6 @@ export default function App() {
         },
       ],
     },
-
     {
       path: "/login",
       element: <LoginPage />,
@@ -102,7 +110,8 @@ export default function App() {
     <>
       {isAuthenticated === true
       || window.location.pathname === '/login' 
-      || window.location.pathname === '/admin' 
+      || window.location.pathname === '/register' 
+      || window.location.pathname === '/'
       ? (
         <RouterProvider router={router} />
       ) : (
