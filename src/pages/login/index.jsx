@@ -2,12 +2,16 @@ import { Button, Checkbox, Divider, Form, Input, InputNumber, message, notificat
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { callLogin, callRegister } from '../../services/api';
+import { useDispatch } from 'react-redux';
+import { doLoginAction } from '../../redux/account/accountSlice';
 
 
 
 const LoginPage = () => {
   const navigate =  useNavigate();
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const dispath = useDispatch();
 
   const onFinish = async (values) => {
     const {username, password } = values;
@@ -18,6 +22,7 @@ const LoginPage = () => {
     setIsSubmit(false);
     if(res?.data) {
       localStorage.setItem('access_token', res.data.access_token);
+      dispath(doLoginAction(res.data.user))
       console.log('>>> check res:', res)
       message.success('Đăng nhập tài khoản thành công');
       navigate('/');
