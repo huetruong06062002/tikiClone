@@ -1,13 +1,13 @@
 import { Modal, notification } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
-const { Dragger } = Upload;
 import { Button, Table } from 'antd';
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { callBulkCreateUser } from '../../../../services/api';
+import templateFile from './template.xlsx?url';
 
-
+const { Dragger } = Upload;
 const UserImport = (props) => {
   const { openModalImport , setOpenModalImport} = props;
   const handleOk = () => {
@@ -140,6 +140,7 @@ const UserImport = (props) => {
         <p className="ant-upload-hint">
           Support for a single upload. Only accept .cvs, .xls, .xlsx
         </p>
+        &nbsp; <a onClick={e => e.stopPropagation()} href={templateFile} download>Download Sample File</a>
       </Dragger>   
       <Table dataSource={dataExcel} title={() => <span>Dữ liệu upload</span>} columns={columns}/>
     </Modal>
