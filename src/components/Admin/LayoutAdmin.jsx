@@ -54,16 +54,7 @@ const items = [
   },
 ];
 
-const itemsDropdown = [
-  {
-    label: <label>Quản lí tài khoản</label>,
-    key: "account",
-  },
-  {
-    label: <label onClick={() => {handleLogout()}}>Đăng xuất</label>,
-    key: "logout",
-  },
-];
+
 
 const LayoutAdmin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -81,6 +72,17 @@ const LayoutAdmin = () => {
       navigate('/')
     }
   }
+
+  const itemsDropdown = [
+    {
+      label: <label>Quản lí tài khoản</label>,
+      key: "account",
+    },
+    {
+      label: <label onClick={() => {handleLogout()}}>Đăng xuất</label>,
+      key: "logout",
+    },
+  ];
   return (
     <Layout
       style={{
@@ -122,9 +124,9 @@ const LayoutAdmin = () => {
         <Content>
           <Outlet/>
         </Content>
-        <Footer style={{padding: 0}}>
-          &copy; 2023. Made with <HeartTwoTone />
-        </Footer>
+        {/* <Footer style={{padding: 0}}>
+          &copy; 2024. Made with <HeartTwoTone />
+        </Footer> */}
       </Layout>
     </Layout>
   );

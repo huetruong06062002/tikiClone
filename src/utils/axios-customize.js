@@ -52,6 +52,13 @@ instance.interceptors.response.use(function (response) {
     }
   }
 
+  if (error.config && error.response  
+    && +error.response.status === 400
+    && error.config.url === '/api/v1/auth/refresh'
+  ){
+    window.location.href = '/login'
+  }
+
   return error?.response?.data ?? Promise.reject(error);
   //The Nullish Coalescing Operator (??)
   //The ?? operator returns the first argument if it is null or undefined. Otherwise it returns the second
