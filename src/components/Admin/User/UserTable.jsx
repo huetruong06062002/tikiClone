@@ -7,7 +7,7 @@ import UserViewDetail from './UserViewDetail';
 import moment from 'moment';
 import UserModalCreate from './UserModalCreate';
 import UserImport from './data/UserImport';
-
+import * as XLSX from 'xlsx';
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -132,6 +132,16 @@ const UserTable = () => {
         fetchUser()
     }
 
+    const handleExportData = ()=> {
+        if(listUser.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listUser);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+            //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+            XLSX.writeFile(workbook, "DataSheet.xlsx");
+        }
+    }
 
     const renderHeader = () => {
         return (
@@ -157,7 +167,7 @@ const UserTable = () => {
                             },
                         }}
                     >
-                        <Button type='primary' icon={<ExportOutlined />}>Export</Button>
+                        <Button type='primary' icon={<ExportOutlined />} onClick={() => handleExportData()}>Export</Button>
                     </ConfigProvider>
                     <ConfigProvider
                         theme={{
