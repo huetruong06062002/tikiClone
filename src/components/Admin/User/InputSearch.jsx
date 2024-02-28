@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Col, Form, Input, Row, theme } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 const InputSearch = (props) => {
     const { token } = theme.useToken();
@@ -64,15 +65,10 @@ const InputSearch = (props) => {
             </Row>
             <Row>
                 <Col span={24} style={{ textAlign: 'right' }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" >
                         Search
-                    </Button>
-                    <Button
-                        style={{ margin: '0 8px' }}
-                        onClick={() => {
-                            form.resetFields();
-                        }}
-                    >
+                    </Button>                
+                    <Button>
                         Clear
                     </Button>
                     {/* <a
