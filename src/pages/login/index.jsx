@@ -22,7 +22,7 @@ const LoginPage = () => {
     setIsSubmit(false);
     if(res?.data) {
       localStorage.setItem('access_token', res.data.access_token);
-      dispath(doLoginAction(res.data))
+      dispath(doLoginAction(res.data.user))
       console.log('>>> check res:', res)
       message.success('Đăng nhập tài khoản thành công');
       navigate('/');
