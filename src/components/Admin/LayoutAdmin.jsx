@@ -10,12 +10,14 @@ import {
   MenuUnfoldOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Dropdown, Space } from "antd";
-import { Outlet } from "react-router-dom";
+import { Layout, Menu, Dropdown, Space, message } from "antd";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./layout.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./layout.scss";
+import { callLogout } from '../../services/api';
+import { doLogoutAction } from '../../redux/account/accountSlice';
 const { Content, Footer, Sider } = Layout;
 
 const items = [
@@ -58,7 +60,7 @@ const itemsDropdown = [
     key: "account",
   },
   {
-    label: <label>Đăng xuất</label>,
+    label: <label onClick={() => {handleLogout()}}>Đăng xuất</label>,
     key: "logout",
   },
 ];
@@ -68,6 +70,17 @@ const LayoutAdmin = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const user = useSelector((state) => state.account.user);
 
+  const navigate = useNavigate();
+  const dispath = useDispatch();
+
+  const handleLogout = async() => {
+    const res = await callLogout();
+    if(res && res.data) {
+      dispath(doLogoutAction());
+      message.success('Đăng xuất thành công');
+      navigate('/')
+    }
+  }
   return (
     <Layout
       style={{

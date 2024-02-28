@@ -2,27 +2,40 @@ import React, { useState } from "react";
 import { FaReact } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { VscSearchFuzzy } from "react-icons/vsc";
-import { Divider, Badge, Drawer } from "antd";
+import { Divider, Badge, Drawer, message } from "antd";
 import "./header.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 import { useNavigate } from "react-router";
 import { MdMenu } from "react-icons/md";
+import { callLogout } from '../../services/api';
+import { doLoginAction, doLogoutAction } from '../../redux/account/accountSlice';
+
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const user = useSelector((state) => state.account.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = async() => {
+    const res = await callLogout();
+    if(res && res.data) {
+      dispatch(doLogoutAction());
+      message.success('Đăng xuất thành công');
+      navigate('/');
+    }
+  }
 
   const items = [
     {
-      label: <label>Quản lí tài khoản</label>,
+      label: <label style={{cursor: "pointer"}}>Quản lí tài khoản</label>,
       key: "account",
     },
     {
-      label: <label>Đăng xuất</label>,
+      label: <label style={{cursor: "pointer"}} onClick={() => handleLogout()}>Đăng xuất</label>,
       key: "logout",
     },
   ];

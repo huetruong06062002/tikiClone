@@ -18,6 +18,7 @@ import AdminPage from './pages/admin/index.jsx';
 import ProtectedRoute from './components/ProtectedRoute/index.jsx';
 import LayoutAdmin from './components/Admin/LayoutAdmin.jsx';
 import './styles/reset.scss';
+
 const Layout = () => {
   return (
     <div className="layout-app">
@@ -33,7 +34,7 @@ const Layout = () => {
 
 export default function App() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const isloading = useSelector((state) => state.account.isLoading);
 
   const getAccount = async () => {
     if(window.location.pathname === '/login'
@@ -95,10 +96,9 @@ export default function App() {
 
   return (
     <>
-      {isAuthenticated === true
+      {isloading === false
       || window.location.pathname === '/login' 
       || window.location.pathname === '/register' 
-      || window.location.pathname === '/'
       ? (
         <RouterProvider router={router} />
       ) : (
