@@ -99,6 +99,7 @@ export default function App() {
       {isloading === false
       || window.location.pathname === '/login' 
       || window.location.pathname === '/register' 
+      || window.location.pathname === '/'
       ? (
         <RouterProvider router={router} />
       ) : (
