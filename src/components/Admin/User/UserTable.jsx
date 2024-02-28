@@ -9,21 +9,7 @@ const UserTable = () => {
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
-    
-    useEffect(() => {
-        fetchUser()
-    }, [current, pageSize])
-
-    const fetchUser = async() => {
-        const query = `current=${current}&pageSize=${pageSize}`;
-        const res = await callFetchListUsers(query);
-        if(res && res.data) {
-            setListUser(res.data.result);
-            setTotal(res.data.meta.total);
-        }
-    }
-
-
+    const [isLoading, setIsLoading] = useState(false);
     const columns = [
         {
             title: 'Id',
@@ -54,6 +40,25 @@ const UserTable = () => {
         }
     ];
 
+    useEffect(() => {
+        fetchUser()
+    }, [current, pageSize])
+
+    const fetchUser = async(searchFilter) => {
+        setIsLoading(true);
+        let query = `current=${current}&pageSize=${pageSize}`;
+        if(searchFilter){
+            query += `&${searchFilter}`
+        }
+        console.log(query);
+        const res = await callFetchListUsers(query);
+        if(res && res.data) {
+            setListUser(res.data.result);
+            setTotal(res.data.meta.total);
+        }
+        setIsLoading(false);
+    }
+
     const onChange = (pagination, filters, sorter, extra) => {
         if(pagination && pagination.current !== current){
             setCurrent(pagination.current);
@@ -65,15 +70,20 @@ const UserTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+    const handleSearch = (query) => {
+        fetchUser(query);
+    }
+
     return (
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <InputSearch />
+                    <InputSearch handleSearch={handleSearch} />
                 </Col>
                 <Col span={24}>
                     <Table
                         className='def'
+                        loading={isLoading}
                         columns={columns}
                         dataSource={listUser}
                         onChange={onChange}
