@@ -29,13 +29,15 @@ const UserModalCreate = (props) => {
   return (
     <>
       <Modal 
-      title="Basic Modal" 
+      title="Thêm mới User" 
       open={openModalCreate} 
       onOk={() => form.submit()} 
       onCancel={() => setOpenModalCreate(false)}
       okText={"Tạo mới"}
       cancelText= {"Hủy"}
       confirmLoading={isSubmit}
+      maskClosable={false}
+
       >
         <Divider/>
         <Form

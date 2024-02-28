@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Button, ConfigProvider } from 'antd';
 import InputSearch from './InputSearch';
 import { callFetchListUsers } from '../../../services/api';
-import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserViewDetail from './UserViewDetail';
 import moment from 'moment';
 import UserModalCreate from './UserModalCreate';
+import UserImport from './data/UserImport';
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
@@ -19,6 +20,8 @@ const UserTable = () => {
     const [dataViewDetail, setDataViewDetail] = useState({})
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openModalImport, setOpenModalImport] = useState(false);
+
 
     const columns = [
         {
@@ -53,12 +56,12 @@ const UserTable = () => {
             sorter: true
         },
         {
-            title: 'Ngày cập nhật',
-            dataIndex: 'updatedAt',
+            title: 'Thời gian tạo',
+            dataIndex: 'createdAt',
             sorter: true,
             render: (text, record, index) => {
                 return <>
-                        {moment(record?.updatedAt).format('DD-MM-YYYY hh:mm:ss')}
+                        {moment(record?.createdAt).format('DD-MM-YYYY hh:mm:ss')}
                 </>
             }
         },
@@ -154,7 +157,7 @@ const UserTable = () => {
                             },
                         }}
                     >
-                        <Button type='primary' icon={<CloudDownloadOutlined/>}>Export</Button>
+                        <Button type='primary' icon={<ExportOutlined />}>Export</Button>
                     </ConfigProvider>
                     <ConfigProvider
                         theme={{
@@ -163,7 +166,9 @@ const UserTable = () => {
                             },
                         }}
                     >
-                        <Button type='primary' icon={<CloudUploadOutlined/>}>Import</Button>
+                        <Button type='primary' icon={<CloudUploadOutlined/>} 
+                            onClick={() => {setOpenModalImport(true)}}
+                        >Import</Button>
                     </ConfigProvider>
                     <Button type="ghost" onClick={() => handleRefresh()}><ReloadOutlined/></Button>
                 </div>
@@ -202,12 +207,17 @@ const UserTable = () => {
             <UserModalCreate
                 openModalCreate = {openModalCreate}
                 setOpenModalCreate = {setOpenModalCreate}
+                fetchUser={fetchUser}
             />
             <UserViewDetail
                 openViewDetail = {openViewDetail}
                 setOpenViewDetail = {setOpenViewDetail}
                 dataViewDetail = {dataViewDetail}
                 setDataViewDetail = {setDataViewDetail}
+            />
+            <UserImport
+                openModalImport={openModalImport}
+                setOpenModalImport={setOpenModalImport}
             />
         </>
     )
