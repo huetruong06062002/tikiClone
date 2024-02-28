@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Row, Col, Button } from 'antd';
+import { Table, Row, Col, Button, ConfigProvider } from 'antd';
 import InputSearch from './InputSearch';
 import { callFetchListUsers } from '../../../services/api';
-import { DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserViewDetail from './UserViewDetail';
 
 // https://stackblitz.com/run?file=demo.tsx
@@ -104,25 +104,71 @@ const UserTable = () => {
         console.log('params', pagination, filters, sorter, extra);
     };
 
+
     const handleSearch = (query) => {
         fetchUser(query);
     }
 
+    const handleRefresh = () =>{
+        setFilter("");
+        setSortQuery("");
+        setCurrent(1);
+        fetchUser()
+    }
+
+
+    const renderHeader = () => {
+        return (
+            <>
+               <div style={{display:'flex', justifyContent:'space-between'}}>
+                <div>
+                    Table list User
+                </div>
+                <div style={{display:'flex', gap: '0.5rem'}}>
+                    <ConfigProvider
+                        theme={{
+                            token:{
+                                colorPrimary: '#00b96b',
+                            },
+                        }}
+                    >
+                        <Button type='primary'><PlusOutlined/>Add</Button>
+                    </ConfigProvider>
+                    <ConfigProvider
+                        theme={{
+                            token:{
+                                colorPrimary: '#7f8c8d',
+                            },
+                        }}
+                    >
+                        <Button type='primary' icon={<CloudDownloadOutlined/>}>Export</Button>
+                    </ConfigProvider>
+                    <ConfigProvider
+                        theme={{
+                            token:{
+                                colorPrimary: '#f1c40f',
+                            },
+                        }}
+                    >
+                        <Button type='primary' icon={<CloudUploadOutlined/>}>Import</Button>
+                    </ConfigProvider>
+                    <Button type="ghost" onClick={() => handleRefresh()}><ReloadOutlined/></Button>
+                </div>
+             </div>
+            </>
+        )
+    }
+
     return (
         <>
-            <Row style={{display:'flex', gap:'0.5rem',position: 'relative', right: 0}}>
-                <Button><PlusOutlined/></Button>
-                <Button type="ghost" onClick={() => {
-                    setFilter("");
-                    setSortQuery("");
-                }}><ReloadOutlined/></Button>
-            </Row>
+         
             <Row gutter={[20, 20]}>
                 <Col span={24}>
                     <InputSearch handleSearch={handleSearch} />
                 </Col>
                 <Col span={24}>
                     <Table
+                        title={renderHeader}
                         className='def'
                         loading={isLoading}
                         columns={columns}
@@ -133,7 +179,8 @@ const UserTable = () => {
                             current : current, 
                             pageSize: pageSize, 
                             showSizeChanger : true, 
-                            total: total 
+                            total: total ,
+                            showTotal: (total, range) => {return <div> {range[0]}-{range[1]} trên {total}</div>}
                             }
                         }
                     />

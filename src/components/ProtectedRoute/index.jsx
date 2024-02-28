@@ -9,6 +9,7 @@ const RouteBaseRoute = (props) => {
   const user = useSelector(state => state.account.user)
   const userRole = user.role;
 
+  console.log(userRole)
   if(isAdminRoute && userRole === 'ADMIN') {
     return (<>{props.children}</>)
   }else{
