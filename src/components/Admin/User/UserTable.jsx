@@ -4,6 +4,8 @@ import InputSearch from './InputSearch';
 import { callFetchListUsers } from '../../../services/api';
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserViewDetail from './UserViewDetail';
+import moment from 'moment';
+import UserModalCreate from './UserModalCreate';
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
@@ -16,6 +18,7 @@ const UserTable = () => {
     const [sortQuery, setSortQuery] = useState("");
     const [dataViewDetail, setDataViewDetail] = useState({})
     const [openViewDetail, setOpenViewDetail] = useState(false);
+    const [openModalCreate, setOpenModalCreate] = useState(false);
 
     const columns = [
         {
@@ -48,6 +51,16 @@ const UserTable = () => {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             sorter: true
+        },
+        {
+            title: 'Ngày cập nhật',
+            dataIndex: 'updatedAt',
+            sorter: true,
+            render: (text, record, index) => {
+                return <>
+                        {moment(record?.updatedAt).format('DD-MM-YYYY hh:mm:ss')}
+                </>
+            }
         },
         {
             title: 'Action',
@@ -132,7 +145,7 @@ const UserTable = () => {
                             },
                         }}
                     >
-                        <Button type='primary'><PlusOutlined/>Add</Button>
+                        <Button type='primary' onClick={() => {setOpenModalCreate(true)}}><PlusOutlined/>Add</Button>
                     </ConfigProvider>
                     <ConfigProvider
                         theme={{
@@ -186,6 +199,10 @@ const UserTable = () => {
                     />
                 </Col>
             </Row>
+            <UserModalCreate
+                openModalCreate = {openModalCreate}
+                setOpenModalCreate = {setOpenModalCreate}
+            />
             <UserViewDetail
                 openViewDetail = {openViewDetail}
                 setOpenViewDetail = {setOpenViewDetail}
