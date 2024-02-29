@@ -81,13 +81,15 @@ const BookViewDetail = (props) => {
                 >
                     <Descriptions.Item label="Id">{dataViewDetail?._id}</Descriptions.Item>
                     <Descriptions.Item label="Tên sách">{dataViewDetail?.mainText}</Descriptions.Item>
+                    
                     <Descriptions.Item label="Tác giả">{dataViewDetail?.author}</Descriptions.Item>
                     <Descriptions.Item label="Giá tiền">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(dataViewDetail?.price ?? 0)}</Descriptions.Item>
 
                     <Descriptions.Item label="Thể loại" span={2}>
                         <Badge status="processing" text={dataViewDetail?.category} />
                     </Descriptions.Item>
-
+                    <Descriptions.Item label="Số lượng đã bán">{dataViewDetail?.sold}</Descriptions.Item>
+                    <Descriptions.Item label="Số lượng">{dataViewDetail?.quantity}</Descriptions.Item>
                     <Descriptions.Item label="Created At">
                         {moment(dataViewDetail?.createdAt).format(FORMAT_DATE_DISPLAY)}
                     </Descriptions.Item>

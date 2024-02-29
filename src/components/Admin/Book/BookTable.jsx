@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Button, ConfigProvider, Popconfirm, notification, message } from 'antd';
 import InputSearch from './InputSearch';
-import { callDeleteUser, callFetchListBooks, callFetchListUsers } from '../../../services/api';
+import { callDeleteBook, callDeleteUser, callFetchListBooks, callFetchListUsers } from '../../../services/api';
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeleteTwoTone, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
@@ -80,9 +80,9 @@ const BookTable = () => {
                     <div>
                         <Popconfirm
                             placement='leftTop'
-                            title={"Xác nhận xóa user"}
-                            description={"Bạn có chắc chắn muốn xóa user này ?"}
-                            onConfirm={() => handleDeleteUser(record._id)}
+                            title={"Xác nhận xóa sách"}
+                            description={"Bạn có chắc chắn muốn xóa sách này ?"}
+                            onConfirm={() => handleDeleteBook(record._id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
@@ -217,11 +217,11 @@ const BookTable = () => {
     }
 
 
-    const handleDeleteUser = async(userId) => {
-        const res = await callDeleteUser(userId);
+    const handleDeleteBook = async(bookId) => {
+        const res = await callDeleteBook(bookId);
         if(res && res.data) {
-            message.success('Xóa user thành công')
-            fetchUser()
+            message.success('Xóa book thành công')
+            props.fetchBook()
         }else{
             notification.error({
                 message: 'Có lỗi xảy ra',

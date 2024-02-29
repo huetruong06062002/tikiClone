@@ -5,3 +5,12 @@ body {
 #root > section > section > main > div > div:nth-child(2) > div > div > div > div > div.ant-table-container > div > table > tbody > tr:nth-child(1) > td:nth-child(7) > div {
   display: flex;
 }
+
+#root > div > div > header > div > div.page-header__logo > span{
+  padding-bottom: 0.625rem;
+}
+
+
+#root > div > div.header-container{
+  margin-bottom: 1rem;
+}
