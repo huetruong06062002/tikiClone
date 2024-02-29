@@ -140,7 +140,10 @@ const UserImport = (props) => {
         <p className="ant-upload-hint">
           Support for a single upload. Only accept .cvs, .xls, .xlsx
         </p>
-        &nbsp; <a onClick={e => e.stopPropagation()} href={templateFile} download>Download Sample File</a>
+        &nbsp; <a 
+        onClick={e => e.stopPropagation()} 
+        href={templateFile} 
+        download>Download Sample File</a>
       </Dragger>   
       <Table dataSource={dataExcel} title={() => <span>Dữ liệu upload</span>} columns={columns}/>
     </Modal>

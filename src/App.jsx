@@ -19,6 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute/index.jsx';
 import LayoutAdmin from './components/Admin/LayoutAdmin.jsx';
 import './styles/reset.scss';
 import UserTable from './components/Admin/User/UserTable.jsx';
+import BookTable from './components/Admin/Book/BookTable.jsx';
 
 const Layout = () => {
   return (
@@ -81,7 +82,7 @@ export default function App() {
         },
         {
           path: "book",
-          element: <BookPage />,
+          element: <BookTable />,
         },
       ],
     },

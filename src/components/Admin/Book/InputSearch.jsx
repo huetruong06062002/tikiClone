@@ -6,7 +6,7 @@ const InputSearch = (props) => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
 
-    const formStyle = {
+    const formStyle = { 
         maxWidth: 'none',
         background: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
@@ -15,17 +15,16 @@ const InputSearch = (props) => {
 
     const onFinish = (values) => {
         let query = '';
-        if(values.fullName) {
-            query += `&fullName=/${values.fullName}/i`
+        if(values.mainText) {
+            query += `&mainText=/${values.mainText}/i`
         }
-        if(values.email) {
-            query += `&email=/${values.email}/i`
+        if(values.author) {
+            query += `&author=/${values.author}/i`
         }
-        if(values.phone){
-            query += `&phone=/${values.phone}/i`
+        if(values.category){
+            query += `&category=/${values.category}/i`
         }
 
-        console.log(query)
         if(query){
             props.handleSearch(query);
         }
@@ -37,29 +36,29 @@ const InputSearch = (props) => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }} //whole column
-                        name={`fullName`}
-                        label={`Name`}
+                        name={`mainText`}
+                        label={`Tên sách`}
                     >
-                        <Input placeholder="Tên hiển thị" />
+                        <Input placeholder="Tên sách" />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }} //whole column
-                        name={`email`}
-                        label={`Email`}
+                        name={`author`}
+                        label={`Tác giả`}
                     >
-                        <Input placeholder="Email" />
+                        <Input placeholder="Tác giả" />
                     </Form.Item>
                 </Col>
 
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }} //whole column
-                        name={`phone`}
-                        label={`Số điện thoại`}
+                        name={`category`}
+                        label={`Thể loại`}
                     >
-                        <Input placeholder="Số điện thoại" />
+                        <Input placeholder="Thể loại" />
                     </Form.Item>
                 </Col>
             </Row>

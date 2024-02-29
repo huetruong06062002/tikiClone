@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Button, ConfigProvider, Popconfirm, notification, message } from 'antd';
 import InputSearch from './InputSearch';
-import { callDeleteUser, callFetchListUsers } from '../../../services/api';
+import { callDeleteUser, callFetchListBooks, callFetchListUsers } from '../../../services/api';
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeleteTwoTone, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import UserViewDetail from './UserViewDetail';
 import moment from 'moment';
-import UserModalCreate from './UserModalCreate';
-import UserImport from './data/UserImport';
 import * as XLSX from 'xlsx';
-import UserModalUpdate from './UserModalUpdate';
+
 // https://stackblitz.com/run?file=demo.tsx
-const UserTable = () => {
-    const [listUser, setListUser] = useState([]);
+const BookTable = () => {
+    const [listBook, setListBook] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
@@ -44,19 +41,24 @@ const UserTable = () => {
             }
         },
         {
-            title: 'Tên hiển thị ',
-            dataIndex: 'fullName',
+            title: 'Tên Sách',
+            dataIndex: 'mainText',
             sorter: true,
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
+            title: 'Thể loại',
+            dataIndex: 'category',
             sorter: true
         },
         {
-            title: 'Số điện thoại',
-            dataIndex: 'phone',
+            title: 'Tác giả',
+            dataIndex: 'author',
             sorter: true
+        },
+        {
+          title: 'Giá tiền',
+          dataIndex: 'price',
+          sorter: true
         },
         {
             title: 'Thời gian tạo',
@@ -72,7 +74,7 @@ const UserTable = () => {
             title: 'Action',
             render: (text, record, index) => {
                 return (
-                    <>
+                    <div>
                         <Popconfirm
                             placement='leftTop'
                             title={"Xác nhận xóa user"}
@@ -94,7 +96,7 @@ const UserTable = () => {
                                 setOpeModalUpdate(true)} 
                             }
                         />                      
-                    </>
+                    </div>
                 )
             }
         }
@@ -119,9 +121,9 @@ const UserTable = () => {
             query += `&${searchFilter}`
         }
         console.log(query);
-        const res = await callFetchListUsers(query);
+        const res = await callFetchListBooks(query);
         if(res && res.data) {
-            setListUser(res.data.result);
+            setListBook(res.data.result);
             setTotal(res.data.meta.total);
         }
         setIsLoading(false);
@@ -238,7 +240,7 @@ const UserTable = () => {
                         className='def'
                         loading={isLoading}
                         columns={columns}
-                        dataSource={listUser}
+                        dataSource={listBook}
                         onChange={onChange}
                         pagination={
                             { 
@@ -252,31 +254,9 @@ const UserTable = () => {
                     />
                 </Col>
             </Row>
-            <UserModalCreate
-                openModalCreate = {openModalCreate}
-                setOpenModalCreate = {setOpenModalCreate}
-                fetchUser={fetchUser}
-            />
-            <UserViewDetail
-                openViewDetail = {openViewDetail}
-                setOpenViewDetail = {setOpenViewDetail}
-                dataViewDetail = {dataViewDetail}
-                setDataViewDetail = {setDataViewDetail}
-            />
-            <UserImport
-                openModalImport={openModalImport}
-                setOpenModalImport={setOpenModalImport}
-            />
-            <UserModalUpdate
-                openModalUpdate = {openModalUpdate}
-                setOpeModalUpdate = {setOpeModalUpdate}
-                fetchUser={fetchUser}
-                dataUpdate={dataUpdate}
-                setDataUpdate={setDataUpdate}
-            />
         </>
     )
 }
 
 
-export default UserTable;
+export default BookTable;

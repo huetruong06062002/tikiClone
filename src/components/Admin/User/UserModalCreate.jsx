@@ -36,8 +36,8 @@ const UserModalCreate = (props) => {
       okText={"Tạo mới"}
       cancelText= {"Hủy"}
       confirmLoading={isSubmit}
+      //do not close when click outside
       maskClosable={false}
-
       >
         <Divider/>
         <Form

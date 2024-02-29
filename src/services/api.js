@@ -1,7 +1,6 @@
 import axios from '../utils/axios-customize'
 
-
-
+/* ===================== User ================================ */
 export const callRegister = (fullName, email, password , phone) => {
   return axios.post('api/v1/user/register', {fullName, email, password , phone})
 } 
@@ -13,6 +12,7 @@ export const callLogin = (username, password) => {
     // delay: 5000
   })
 }
+
 
 export const callFetchAccount = () => {
   return axios.get('/api/v1/auth/account');
@@ -40,4 +40,10 @@ export const callDeleteUser = (id) => {
 
 export const callUpdateUser = (_id, fullName, phone) => {
   return axios.put('/api/v1/user', {_id, fullName, phone})
+}
+
+
+/* ===================== Book ================================ */
+export const callFetchListBooks = (query) => {
+  return axios.get(`/api/v1/book?${query}`);
 }
