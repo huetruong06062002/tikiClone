@@ -6,6 +6,7 @@ import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeleteTwoTo
 import moment from 'moment';
 import * as XLSX from 'xlsx';
 import BookViewDetail from './BookViewDetail';
+import BookModalCreate from './BookModalCreate';
 
 // https://stackblitz.com/run?file=demo.tsx
 const BookTable = () => {
@@ -104,10 +105,10 @@ const BookTable = () => {
     ];
 
     useEffect(() => {
-        fetchUser()
+        fetchBook()
     }, [current, pageSize , filter, sortQuery])
 
-    const fetchUser = async(searchFilter) => {
+    const fetchBook = async(searchFilter) => {
         setIsLoading(true);
         let query = `current=${current}&pageSize=${pageSize}`;
         if(filter) {
@@ -259,6 +260,11 @@ const BookTable = () => {
               setOpenViewDetail = {setOpenViewDetail}
               dataViewDetail = {dataViewDetail}
               setDataViewDetail = {setDataViewDetail}
+            />
+            <BookModalCreate
+              openModalCreate= {openModalCreate}
+              setOpenModalCreate = {setOpenModalCreate}
+              fetchBook = {fetchBook}
             />
         </>
     )
