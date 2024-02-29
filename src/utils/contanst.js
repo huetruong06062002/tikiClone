@@ -1,0 +1,1 @@
+export const FORMAT_DATE_DISPLAY = "DD-MM-YYYY hh:mm:ss"

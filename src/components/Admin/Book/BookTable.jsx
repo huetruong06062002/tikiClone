@@ -5,6 +5,7 @@ import { callDeleteUser, callFetchListBooks, callFetchListUsers } from '../../..
 import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeleteTwoTone, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
+import BookViewDetail from './BookViewDetail';
 
 // https://stackblitz.com/run?file=demo.tsx
 const BookTable = () => {
@@ -228,8 +229,7 @@ const BookTable = () => {
     }
 
     return (
-        <>
-         
+        <>        
             <Row gutter={[20, 20]}>
                 <Col span={24}>
                     <InputSearch handleSearch={handleSearch} />
@@ -254,6 +254,12 @@ const BookTable = () => {
                     />
                 </Col>
             </Row>
+            <BookViewDetail
+              openViewDetail = {openViewDetail}
+              setOpenViewDetail = {setOpenViewDetail}
+              dataViewDetail = {dataViewDetail}
+              setDataViewDetail = {setDataViewDetail}
+            />
         </>
     )
 }
