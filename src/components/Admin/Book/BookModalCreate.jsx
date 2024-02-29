@@ -33,6 +33,10 @@ const BookModalCreate = (props) => {
             }
         }
         fetchCategory();
+        return () => {
+            form.resetFields();
+            setIsSubmit(false);
+        }
     }, [])
 
 
@@ -101,13 +105,13 @@ const BookModalCreate = (props) => {
 
     const handleChange = (info, type) => {
         if (info.file.status === 'uploading') {
-            type ? setLoadingSlider(true) : setLoadingSlider(true);
+            type ? setLoadingSlider(true) : setLoading(true);
             return;
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, (url) => {
-                type ? setLoadingSlider(false) : setLoadingSlider(false);
+                type ? setLoadingSlider(false) : setLoading(false);
                 setImageUrl(url);
             });
         }

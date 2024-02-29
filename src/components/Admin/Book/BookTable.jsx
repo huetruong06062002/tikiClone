@@ -7,6 +7,7 @@ import moment from 'moment';
 import * as XLSX from 'xlsx';
 import BookViewDetail from './BookViewDetail';
 import BookModalCreate from './BookModalCreate';
+import BookModalUpdate from './BookModalUpdate';
 
 // https://stackblitz.com/run?file=demo.tsx
 const BookTable = () => {
@@ -21,7 +22,7 @@ const BookTable = () => {
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openModalImport, setOpenModalImport] = useState(false);
-    const [openModalUpdate, setOpeModalUpdate] = useState(false);
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [dataUpdate, setDataUpdate] = useState({});
 
     console.log(dataUpdate);
@@ -95,7 +96,7 @@ const BookTable = () => {
                             onClick={() => 
                             {
                                 setDataUpdate(record)
-                                setOpeModalUpdate(true)} 
+                                setOpenModalUpdate(true)} 
                             }
                         />                      
                     </div>
@@ -149,14 +150,14 @@ const BookTable = () => {
 
 
     const handleSearch = (query) => {
-        fetchUser(query);
+        fetchBook(query);
     }
 
     const handleRefresh = () =>{
         setFilter("");
         setSortQuery("");
         setCurrent(1);
-        fetchUser()
+        fetchBook()
     }
 
     const handleExportData = ()=> {
@@ -265,6 +266,13 @@ const BookTable = () => {
               openModalCreate= {openModalCreate}
               setOpenModalCreate = {setOpenModalCreate}
               fetchBook = {fetchBook}
+            />
+            <BookModalUpdate
+              openModalUpdate={openModalUpdate}
+              setOpenModalUpdate={setOpenModalUpdate}
+              dataUpdate={dataUpdate}
+              setDataUpdate={setDataUpdate}
+              fetchBook={fetchBook}
             />
         </>
     )
