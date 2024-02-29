@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Row, Col, Button, ConfigProvider } from 'antd';
+import { Table, Row, Col, Button, ConfigProvider, Popconfirm, notification, message } from 'antd';
 import InputSearch from './InputSearch';
-import { callFetchListUsers } from '../../../services/api';
-import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { callDeleteUser, callFetchListUsers } from '../../../services/api';
+import { CloudDownloadOutlined, CloudUploadOutlined, DeleteOutlined, DeleteTwoTone, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserViewDetail from './UserViewDetail';
 import moment from 'moment';
 import UserModalCreate from './UserModalCreate';
 import UserImport from './data/UserImport';
 import * as XLSX from 'xlsx';
+import UserModalUpdate from './UserModalUpdate';
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -21,8 +22,10 @@ const UserTable = () => {
     const [openViewDetail, setOpenViewDetail] = useState(false);
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openModalImport, setOpenModalImport] = useState(false);
+    const [openModalUpdate, setOpeModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState({});
 
-
+    console.log(dataUpdate);
     const columns = [
         {
             title: 'Id',
@@ -70,7 +73,27 @@ const UserTable = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                    <Button type="link"><DeleteOutlined /></Button>
+                        <Popconfirm
+                            placement='leftTop'
+                            title={"Xác nhận xóa user"}
+                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            onConfirm={() => handleDeleteUser(record._id)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{cursor: "pointer", margin: "0 20px"}}>
+                                <DeleteTwoTone twoToneColor="#ff4d4f"/>
+                            </span>
+                        </Popconfirm> 
+                        <EditTwoTone
+                            twoToneColor="#c0392b"
+                            style={{cursor: "pointer"}}
+                            onClick={() => 
+                            {
+                                setDataUpdate(record)
+                                setOpeModalUpdate(true)} 
+                            }
+                        />                      
                     </>
                 )
             }
@@ -146,6 +169,7 @@ const UserTable = () => {
     const renderHeader = () => {
         return (
             <>
+               
                <div style={{display:'flex', justifyContent:'space-between'}}>
                 <div>
                     Table list User
@@ -185,6 +209,20 @@ const UserTable = () => {
              </div>
             </>
         )
+    }
+
+
+    const handleDeleteUser = async(userId) => {
+        const res = await callDeleteUser(userId);
+        if(res && res.data) {
+            message.success('Xóa user thành công')
+            fetchUser()
+        }else{
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message,
+            })
+        }
     }
 
     return (
@@ -228,6 +266,13 @@ const UserTable = () => {
             <UserImport
                 openModalImport={openModalImport}
                 setOpenModalImport={setOpenModalImport}
+            />
+            <UserModalUpdate
+                openModalUpdate = {openModalUpdate}
+                setOpeModalUpdate = {setOpeModalUpdate}
+                fetchUser={fetchUser}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
             />
         </>
     )
