@@ -1,5 +1,5 @@
 import { FilterTwoTone, ReloadOutlined } from '@ant-design/icons';
-import { Row, Col, Form, Checkbox, Divider, InputNumber, Button, Rate, Tabs, Pagination } from 'antd';
+import { Row, Col, Form, Checkbox, Divider, InputNumber, Button, Rate, Tabs, Pagination, Spin } from 'antd';
 import './home.scss';
 import { useEffect, useState } from 'react';
 import { callFetchCategory, callFetchListBooks } from '../../services/api';
@@ -10,7 +10,7 @@ const Home = () => {
 
     const [listBook, setListBook] = useState([]);
     const [current, setCurrent] = useState(2);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
     
     const [isLoading, setIsLoading] = useState(false);
@@ -79,22 +79,22 @@ const Home = () => {
     console.log(current);
     const items = [
         {
-            key: '1',
+            key: 'sort=-sold',
             label: `Phổ biến`,
             children: <></>,
         },
         {
-            key: '2',
+            key: 'sort=-updateAt',
             label: `Hàng Mới`,
             children: <></>,
         },
         {
-            key: '3',
+            key: 'sort=price',
             label: `Giá Thấp Đến Cao`,
             children: <></>,
         },
         {
-            key: '4',
+            key: 'sort=-price',
             label: `Giá Cao Đến Thấp`,
             children: <></>,
         },
@@ -102,10 +102,34 @@ const Home = () => {
 
     const handleChangeFilter = (changedValues, values) => {
         console.log(">>> check handleChangeFilter", changedValues, values)
-    }
+    
+        //only fire if category changes
+        if(changedValues.category) {
+            const cate = values.category;
+            if(cate && cate.length > 0) {
+                const f = cate.join(',');
+                console.log(f);
+                setFilter(`category=${f}`);
+            } else{
+                //reset data -> fetch api
+                setFilter('');
+            }
+        }
 
-    const onFinish  = () => {
-        console.log(123)
+
+    }
+    console.log(filter)
+
+    const onFinish=(values) => {
+        console.log("check values", values)
+        if(values?.range?.from >= 0 && values?.range?.to >= 0){
+            let f = `price>=${values?.range?.from}&price<=${values?.range?.to}`;
+            if(values?.category?.length){
+                const cate = values?.category?.join(',');
+                f+= `&category${cate}`;
+            }
+            setFilter(f);
+        }
     }
     return (
         <div className="homepage-container" style={{ maxWidth: 1440, margin: '0 auto' }}>
@@ -113,7 +137,12 @@ const Home = () => {
                 <Col md={4} sm={0} xs={0}>
                     <div style={{ display: 'flex', justifyContent: "space-between" }}>
                         <span> <FilterTwoTone /> Bộ lọc tìm kiếm</span>
-                        <ReloadOutlined title="Reset" onClick={() => form.resetFields()} />
+                        <ReloadOutlined title="Reset" 
+                        onClick={() => {
+                            form.resetFields();
+                            setFilter('');
+                        }}
+                        />
                     </div>
                     <Form
                         onFinish={onFinish}
@@ -197,42 +226,53 @@ const Home = () => {
                     </Form>
                 </Col>
                 <Col md={20} xs={24}>
-                    <Row>
-                        <Tabs defaultActiveKey="1" items={items}/>
-                    </Row>
-                    <Row className='customize-row'>
-                         {
-                            listBook?.map((item, index) => {
-                                return (
-                                    <div className="column" key={`book-${index}`}>
-                                        <div className='wrapper'>
-                                            <div className='thumbnail'>
-                                                <img src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${item.thumbnail}`} alt="thumbnail book" />
+                    <Spin spinning={isLoading} tip="Loading...">
+                        <div style={{padding: "20px", backgroundColor:"#fff", borderRadius: 5}}>
+                            <Row>
+                                <Tabs 
+                                    defaultActiveKey="sort=-sold" 
+                                    items={items}
+                                    onChange={(value) => {setSortQuery(value)}}
+                                    style={{overflowX: "auto"}}
+                                />
+                            
+                            </Row>
+                            <Row className='customize-row'>
+                                {
+                                    listBook?.map((item, index) => {
+                                        return (
+                                            <div className="column" key={`book-${index}`}>
+                                                <div className='wrapper'>
+                                                    <div className='thumbnail'>
+                                                        <img src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${item.thumbnail}`} alt="thumbnail book" />
+                                                    </div>
+                                                    <div className='text'>{item.mainText}</div>
+                                                    <div className='price'>
+                                                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
+                                                    </div>
+                                                    <div className='rating'>
+                                                        <Rate value={5} disabled style={{ color: '#ffce3d', fontSize: 10 }} />
+                                                        <p>Đã bán</p>
+                                                        <span>{item.sold}</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className='text'>{item.mainText}</div>
-                                            <div className='price'>
-                                                {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
-                                            </div>
-                                            <div className='rating'>
-                                                <Rate value={5} disabled style={{ color: '#ffce3d', fontSize: 10 }} />
-                                                <span>{item.sold}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                         }           
-                    </Row>
-                    <Divider />
-                    <Row style={{ display: "flex", justifyContent: "center" }}>
-                        <Pagination
-                            current={current}
-                            total={total}
-                            pageSize={pageSize} 
-                            responsive
-                            onChange={(p, s) => handleOnchangePage({current: p, pageSize: s})}
-                        />
-                    </Row>
+                                        )
+                                    })
+                                }           
+                            </Row>
+                            <Divider />
+                            <Row style={{ display: "flex", justifyContent: "center" }}>
+                                <Pagination
+                                    current={current}
+                                    total={total}
+                                    pageSize={pageSize} 
+                                    responsive
+                                    onChange={(p, s) => handleOnchangePage({current: p, pageSize: s})}
+                                />
+                            </Row>
+                        </div>
+                    </Spin>
                 </Col>
             </Row>
         </div>
