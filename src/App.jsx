@@ -22,6 +22,9 @@ import './styles/reset.scss';
 import UserTable from './components/Admin/User/UserTable.jsx';
 import BookTable from './components/Admin/Book/BookTable.jsx';
 import BookPage from './pages/book/index.jsx';
+import { PersistGate } from 'redux-persist/integration/react'
+
+
 
 const Layout = () => {
   return (
