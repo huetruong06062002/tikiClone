@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import ModalGallery from './ModalGallery';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { BsCartPlus } from 'react-icons/bs';
+import BookLoader from './BookLoader';
 
 const ViewDetail = (props) => {
 
@@ -86,7 +87,7 @@ const ViewDetail = (props) => {
         <div style={{ background: '#efefef', padding: "20px 0" }}>
             <div className='view-detail-book' style={{ maxWidth: 1440, margin: '0 auto', minHeight: "calc(100vh - 150px)" }}>
                 <div style={{ padding: "20px", background: '#fff', borderRadius: 5 }}>
-                    <Row gutter={[20, 20]}>
+                    {/* <Row gutter={[20, 20]}>
                         <Col md={10} sm={0} xs={0}>
                             <ImageGallery
                                 ref={refGallery}
@@ -127,13 +128,13 @@ const ViewDetail = (props) => {
                                 </div>
                                 <div className='delivery'>
                                     <div>
-                                        <span className='left-side'>Vận chuyển</span>
-                                        <span className='right-side'>Miễn phí vận chuyển</span>
+                                        <span className='left'>Vận chuyển</span>
+                                        <span className='right'>Miễn phí vận chuyển</span>
                                     </div>
                                 </div>
                                 <div className='quantity'>
-                                    <span className='left-side'>Số lượng</span>
-                                    <span className='right-side'>
+                                    <span className='left'>Số lượng</span>
+                                    <span className='right'>
                                         <button ><MinusOutlined /></button>
                                         <input defaultValue={1} />
                                         <button><PlusOutlined /></button>
@@ -148,7 +149,8 @@ const ViewDetail = (props) => {
                                 </div>
                             </Col>
                         </Col>
-                    </Row>
+                    </Row> */}
+                    <BookLoader />
                 </div>
             </div>
             <ModalGallery
