@@ -19,10 +19,12 @@ import AdminPage from './pages/admin/index.jsx';
 import ProtectedRoute from './components/ProtectedRoute/index.jsx';
 import LayoutAdmin from './components/Admin/LayoutAdmin.jsx';
 import './styles/reset.scss';
+import './styles/global.scss';
+
 import UserTable from './components/Admin/User/UserTable.jsx';
 import BookTable from './components/Admin/Book/BookTable.jsx';
 import BookPage from './pages/book/index.jsx';
-import { PersistGate } from 'redux-persist/integration/react'
+
 
 
 
