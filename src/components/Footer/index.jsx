@@ -3,7 +3,7 @@ import './footer.scss'
 const Footer = () => {
   return (
     <footer>
-      <div> React Tiki clone &copy;2023 by abc</div>
+      {/* <div> React Tiki clone &copy;2023 by abc</div> */}
     </footer>
   )
 }

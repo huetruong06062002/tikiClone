@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/login";
 import ContactPage from "./pages/contact";
-import BookPage from "./pages/book/index.jsx";
+import BookPage from "./pages/book/ViewDetail.jsx";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header/index.jsx";
 import Footer from "./components/Footer/index.jsx";
