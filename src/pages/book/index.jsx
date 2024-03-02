@@ -19,7 +19,7 @@ const BookPage = () => {
 
   const fetchBook = async (id) => {
     const res = await callFetchBookById(id);
-    console.log('check res', res);
+
     if(res && res.data){
       let raw = res.data;
       //process data
