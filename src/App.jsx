@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/login";
 import ContactPage from "./pages/contact";
-
-
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header/index.jsx";
 import Footer from "./components/Footer/index.jsx";
@@ -20,12 +18,11 @@ import ProtectedRoute from './components/ProtectedRoute/index.jsx';
 import LayoutAdmin from './components/Admin/LayoutAdmin.jsx';
 import './styles/reset.scss';
 import './styles/global.scss';
-
 import UserTable from './components/Admin/User/UserTable.jsx';
 import BookTable from './components/Admin/Book/BookTable.jsx';
 import BookPage from './pages/book/index.jsx';
-import ViewOrder from './components/Order/ViewOrder.jsx';
 import Order from './pages/order/index.jsx';
+import History from './components/Order/History.jsx';
 
 
 
@@ -49,6 +46,16 @@ const LayoutOrder = () => {
     </div>
   )
 }
+
+const LayoutHistory= () => {
+  return (
+    <div className="layout-app">
+      <Header />
+      <Outlet />
+    </div>
+  )
+}
+
 
 
 export default function App() {
@@ -119,6 +126,14 @@ export default function App() {
       errorElement: <NotFound/>,
       children: [
         { index: true, element: <Order /> },
+      ],
+    },
+    {
+      path: "/history",
+      element: <LayoutHistory />,
+      errorElement: <NotFound/>,
+      children: [
+        { index: true, element: <History /> },
       ],
     }
   ]);

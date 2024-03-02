@@ -4,8 +4,10 @@ import './order.scss';
 import ViewOrder from '../../components/Order/ViewOrder';
 import Payment from '../../components/Order/Payment';
 import { SmileOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 const Order = () => {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   return (
     <>
       <div style={{backgroundColor:"#efefef", padding:"20px 0"}}>
@@ -37,7 +39,7 @@ const Order = () => {
           && (<Result
                 icon={<SmileOutlined/>}
                 title="Đơn hàng dã được cập nhật thành công"
-                extra={<Button type="primary">Xem lịch sử</Button>}                  
+                extra={<Button type="primary" onClick={()=> navigate('/history')}>Xem lịch sử</Button>}                  
           /> )}
         </div>
       </div>

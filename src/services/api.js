@@ -96,3 +96,10 @@ export const callFetchBookById = (id) => {
 export const callPlaceOrder = (data) => {
   return axios.post('/api/v1/order', {...data} )
 }
+
+
+/* ===========History============== */
+
+export const callHistory = () => {
+  return axios.get('/api/v1/history')
+}
