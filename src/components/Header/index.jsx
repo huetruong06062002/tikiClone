@@ -5,23 +5,30 @@ import { VscSearchFuzzy } from "react-icons/vsc";
 import { Divider, Badge, Drawer, message, Avatar, Popover } from "antd";
 import "./header.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { DownOutlined } from "@ant-design/icons";
+import { AntCloudOutlined, DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 import { useNavigate } from "react-router";
 import { MdMenu } from "react-icons/md";
 import { callLogout } from '../../services/api';
 import { doLoginAction, doLogoutAction } from '../../redux/account/accountSlice';
 import { Link } from 'react-router-dom';
-
+import { Button, Modal } from 'antd';
+import UserInfo from '../User/UserInfo';
+import ManageAccount from '../User/ManageAccount';
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isModalOpenManageAccount, setIsModalOpenManageAccount] = useState(false);
+
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const user = useSelector((state) => state.account.user);
   const accessToken = localStorage?.getItem('access_token');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const carts = useSelector(state => state.order.carts)
+
+
+
 
   const handleLogout = async() => {
     const res = await callLogout(accessToken);
@@ -34,7 +41,7 @@ const Header = () => {
 
   let items = [
     {
-      label: <label style={{cursor: "pointer"}}>Quản lí tài khoản</label>,
+      label: <label style={{cursor: "pointer"}} onClick={() => setIsModalOpenManageAccount(true)}>Quản lí tài khoản</label>,
       key: "account",
     },
     {
@@ -48,6 +55,13 @@ const Header = () => {
       label: <Link to="/admin">Trang quản trị</Link>,
       key : 'admin'
     })
+  }
+
+  if(user?.role === "USER") {
+    items.splice(1, 0, ({
+      label: <Link to="/history">Xem lịch sử mua hàng</Link>,
+      key : 'admin'
+    }) )
   }
   
 
@@ -63,7 +77,11 @@ const Header = () => {
               <>
                 <div className='book'>
                   {/* {${import.meta.env.VITE_BACKEND_URL}/images/book/${item?.detail?.thumbnail}} */}
-                  <img src= {`${import.meta.env.VITE_BACKEND_URL}/images/book/${item?.detail?.thumbnail}`} />
+                  <Avatar 
+                    src= {`${import.meta.env.VITE_BACKEND_URL}/images/book/${item?.detail?.thumbnail}`}
+                    icon={<AntCloudOutlined/>}
+                    shape="circle"
+                  />
                   <div>{item?.detail?.mainText}</div>
                   <div>{`${item?.detail?.price} đ`}</div>
                 </div>
@@ -156,6 +174,10 @@ const Header = () => {
         <p>Đăng xuất</p>
         <Divider />
       </Drawer>
+      <ManageAccount
+        isModalOpenManageAccount = {isModalOpenManageAccount}
+        setIsModalOpenManageAccount = {setIsModalOpenManageAccount}
+      />
     </>
   );
 };
