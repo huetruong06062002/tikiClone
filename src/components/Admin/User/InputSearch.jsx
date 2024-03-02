@@ -24,8 +24,6 @@ const InputSearch = (props) => {
         if(values.phone){
             query += `&phone=/${values.phone}/i`
         }
-
-        console.log(query)
         if(query){
             props.handleSearch(query);
         }

@@ -8,6 +8,7 @@ import { BsCartPlus } from 'react-icons/bs';
 import BookLoader from './BookLoader';
 import { useDispatch } from 'react-redux';
 import { doAddBookAction } from '../../../redux/order/orderSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ViewDetail = (props) => {
 
@@ -17,6 +18,7 @@ const ViewDetail = (props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentQuantity, setCurrentQuantity] = useState(1);
 
+    const navigate = useNavigate()
     const refGallery = useRef(null);
 
     const images = dataBook?.items ?? [];
@@ -117,7 +119,7 @@ const ViewDetail = (props) => {
                                             <BsCartPlus className='icon-cart' />
                                             <span>Thêm vào giỏ hàng</span>
                                         </button>
-                                        <button className='now'>Mua ngay</button>
+                                        <button className='now' onClick={() => navigate('/order')}>Mua ngay</button>
                                     </div>
                                 </Col>
                             </Col>

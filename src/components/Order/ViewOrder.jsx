@@ -6,11 +6,10 @@ import { useEffect, useState } from 'react';
 import { doDeleteItemCartAction, doUpdateCartAction } from '../../redux/order/orderSlice';
 
 const ViewOrder = (props) => {
+    const {setCurrentStep} = props;
     const carts = useSelector((state) => state.order.carts);
     const [totalPrice, setTotalPrice] = useState(0);
     const dispatch = useDispatch();
-
-    console.log(carts)
     useEffect(() => {
         if(carts && carts.length){
             let sum = 0;
@@ -82,7 +81,7 @@ const ViewOrder = (props) => {
                                 </span>
                             </div>
                             <Divider style={{ margin: "10px 0" }} />
-                            <button>Mua Hàng  ({carts?.length ?? 0})</button>
+                            <button onClick={() => setCurrentStep(1)}>Mua Hàng  ({carts?.length ?? 0})</button>
                         </div>
                     </Col>
                 </Row>

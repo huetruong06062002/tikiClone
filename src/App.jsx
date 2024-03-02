@@ -25,6 +25,7 @@ import UserTable from './components/Admin/User/UserTable.jsx';
 import BookTable from './components/Admin/Book/BookTable.jsx';
 import BookPage from './pages/book/index.jsx';
 import ViewOrder from './components/Order/ViewOrder.jsx';
+import Order from './pages/order/index.jsx';
 
 
 
@@ -39,7 +40,15 @@ const Layout = () => {
   );
 };
 
-
+const LayoutOrder = () => {
+  return (
+    <div className="layout-app">
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
+  )
+}
 
 
 export default function App() {
@@ -97,14 +106,20 @@ export default function App() {
     {
       path: "/login",
       element: <LoginPage />,
+      errorElement: <NotFound/>,
     },
     {
       path: "/register",
       element: <RegisterPage />,
+      errorElement: <NotFound/>,
     },
     {
       path: "/order",
-      element: <ViewOrder />,
+      element: <LayoutOrder />,
+      errorElement: <NotFound/>,
+      children: [
+        { index: true, element: <Order /> },
+      ],
     }
   ]);
 
