@@ -118,7 +118,6 @@ const UserTable = () => {
         if(searchFilter){
             query += `&${searchFilter}`
         }
-        console.log(query);
         const res = await callFetchListUsers(query);
         if(res && res.data) {
             setListUser(res.data.result);

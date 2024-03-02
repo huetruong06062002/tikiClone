@@ -24,6 +24,7 @@ import './styles/global.scss';
 import UserTable from './components/Admin/User/UserTable.jsx';
 import BookTable from './components/Admin/Book/BookTable.jsx';
 import BookPage from './pages/book/index.jsx';
+import ViewOrder from './components/Order/ViewOrder.jsx';
 
 
 
@@ -101,6 +102,10 @@ export default function App() {
       path: "/register",
       element: <RegisterPage />,
     },
+    {
+      path: "/order",
+      element: <ViewOrder />,
+    }
   ]);
 
   return (

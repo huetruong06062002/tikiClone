@@ -27,7 +27,7 @@ const ProtectedRoute = (props) => {
           <RouteBaseRoute>{props.children}</RouteBaseRoute>
         </>
       ) : (
-        <Navigate to="/login" replace />
+        <Navigate to="/" replace />
       )}
     </>
   );

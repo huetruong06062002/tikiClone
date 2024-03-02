@@ -18,13 +18,13 @@ const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const user = useSelector((state) => state.account.user);
+  const accessToken = localStorage?.getItem('access_token');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const carts = useSelector(state => state.order.carts)
 
-
   const handleLogout = async() => {
-    const res = await callLogout();
+    const res = await callLogout(accessToken);
     if(res && res.data) {
       dispatch(doLogoutAction());
       message.success('Đăng xuất thành công');
@@ -49,10 +49,10 @@ const Header = () => {
       key : 'admin'
     })
   }
+  
 
   const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatars/${user?.avatar}`
 
-  console.log(carts)
   const contentPopover = () => {
     
     return (
@@ -116,6 +116,7 @@ const Header = () => {
                       count={carts?.length ?? 0} 
                       size={"small"}
                       showZero
+                      onClick={() => {isAuthenticated === true ? navigate('/order') : navigate('/login') } }
                     >
                       <FiShoppingCart className="icon-card" />
                     </Badge>
